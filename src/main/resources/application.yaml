@@ -30,8 +30,6 @@ spring:
     init:
       mode: always
   data.rest:
-  data:
-    rest:
       base-path: /api
       detection-strategy: annotated
 

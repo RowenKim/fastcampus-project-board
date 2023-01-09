@@ -14,7 +14,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-@ActiveProfiles("testdb")
 @DisplayName("JPA 연결 테스트")
 @Import(JpaConfig.class)
 @DataJpaTest
@@ -37,7 +36,6 @@ class JpaRepositoryTest {
 
         // When
         List<Article> articles = articleRepository.findAll();
-
 
         // Then
         assertThat(articles)
