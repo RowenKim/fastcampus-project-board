@@ -32,6 +32,9 @@ spring:
   data.rest:
       base-path: /api
       detection-strategy: annotated
+  thymeleaf3.decoupled-logic: true
+
+
 
 ---
 # 기존 DB 를 강제로 만들어줘서 사용하는데 내가 지정한 DB 로 사용하고 싶으면 아래 소스 추가
