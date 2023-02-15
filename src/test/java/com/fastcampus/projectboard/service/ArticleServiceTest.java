@@ -55,14 +55,14 @@ class ArticleServiceTest {
         SearchType searchType = SearchType.TITLE;
         String searchKeyword = "title";
         Pageable pageable = Pageable.ofSize(20);
-        given(articleRepository.findByTitle(searchKeyword, pageable)).willReturn(Page.empty());
+        given(articleRepository.findByTitleContaining(searchKeyword, pageable)).willReturn(Page.empty());
 
         // When
         Page<ArticleDto> articles = sut.searchArticles(searchType, searchKeyword, pageable);
 
         // Then
         assertThat(articles).isEmpty();
-        then(articleRepository).should().findByTitle(searchKeyword, pageable);
+        then(articleRepository).should().findByTitleContaining(searchKeyword, pageable);
     }
 
     @DisplayName("게시글을 조회하면, 게시글을 반환한다.")
@@ -80,7 +80,7 @@ class ArticleServiceTest {
         assertThat(dto)
                 .hasFieldOrPropertyWithValue("title", article.getTitle())
                 .hasFieldOrPropertyWithValue("content", article.getContent())
-                .hasFieldOrPropertyWithValue("hashtag", article.getHashTag());
+                .hasFieldOrPropertyWithValue("hashTag", article.getHashTag());
         then(articleRepository).should().findById(articleId);
     }
 
@@ -130,7 +130,7 @@ class ArticleServiceTest {
         assertThat(article)
                 .hasFieldOrPropertyWithValue("title", dto.title())
                 .hasFieldOrPropertyWithValue("content", dto.content())
-                .hasFieldOrPropertyWithValue("hashtag", dto.hashtag());
+                .hasFieldOrPropertyWithValue("hashTag", dto.hashTag());
         then(articleRepository).should().getReferenceById(dto.id());
     }
 
@@ -186,12 +186,12 @@ class ArticleServiceTest {
         return createArticleDto("title", "content", "#java");
     }
 
-    private ArticleDto createArticleDto(String title, String content, String hashtag) {
+    private ArticleDto createArticleDto(String title, String content, String hashTag) {
         return ArticleDto.of(1L,
                 createUserAccountDto(),
                 title,
                 content,
-                hashtag,
+                hashTag,
                 LocalDateTime.now(),
                 "Uno",
                 LocalDateTime.now(),

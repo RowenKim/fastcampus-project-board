@@ -45,8 +45,8 @@ public class Article extends AuditingFields{
         this.hashTag = hashTag;
     }
 
-    public static Article of(UserAccount userAccount, String title, String content, String hashtag) {
-        return new Article(userAccount, title, content, hashtag);
+    public static Article of(UserAccount userAccount, String title, String content, String hashTag) {
+        return new Article(userAccount, title, content, hashTag);
     }
 
     @Override
