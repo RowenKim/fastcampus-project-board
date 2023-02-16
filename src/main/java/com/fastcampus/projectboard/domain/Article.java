@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @Table(indexes = {
         @Index(columnList = "title"),
         @Index(columnList = "hashTag"),
@@ -24,6 +24,7 @@ public class Article extends AuditingFields{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter @ManyToOne(optional = false) private UserAccount userAccount; // 유저 정보 (ID)
 
     @Setter @Column(nullable = false) private String title; // 제목문
     @Setter @Column(nullable = false, length = 10000) private String content; // 본문
@@ -31,20 +32,21 @@ public class Article extends AuditingFields{
     @Setter private String hashTag; // 해시태그
 
     @ToString.Exclude
-    @OrderBy("id") // id 로 정렬
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
     protected Article(){}
 
-    private Article(String title, String content, String hashTag) {
+    private Article(UserAccount userAccount, String title, String content, String hashtag) {
+        this.userAccount = userAccount;
         this.title = title;
         this.content = content;
         this.hashTag = hashTag;
     }
 
-    public static Article of(String title, String content, String hashTag) {
-        return new Article(title, content, hashTag);
+    public static Article of(UserAccount userAccount, String title, String content, String hashTag) {
+        return new Article(userAccount, title, content, hashTag);
     }
 
     @Override
