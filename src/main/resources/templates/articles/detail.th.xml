@@ -2,4 +2,23 @@
 <thlogic>
     <attr sel="#header" th:replace="header :: header"/>
     <attr sel="#footer" th:replace="footer :: footer"/>
+
+    <attr sel="#article-main" th:object="${article}"><!-- article 을 object로 명시 하고 아래에서 생략하여 사용 -->
+        <attr sel="#article-header/h1" th:text="*{title}" /> <!-- == ${article.title} -->
+        <attr sel="#nickname" th:text="*{nickname}" />
+        <attr sel="#email" th:text="*{email}" />
+        <attr sel="#created-at" th:datetime="*{createdAt}" th:text="*{#temporals.format(createdAt, 'yyyy-MM-dd HH:mm:ss')}" />
+        <attr sel="#hashtag" th:text="*{hashTag}" />
+        <attr sel="#article-content/pre" th:text="*{content}" />
+    </attr>
+
+    <attr sel="#article-comments" th:remove="all-but-first"><!-- 제일 상단 li 태그 빼고 아래에 있는 건 삭제. -->
+        <attr sel="li[0]" th:each="articleComment : ${articleComments}"><!-- 제일 상단 li 태그가 기준이 되어서 태그 안으로 치환 -->
+            <attr sel="div/strong" th:text="${articleComment.nickname}" />
+            <attr sel="div/small/time" th:datetime="${articleComment.createdAt}" th:text="${#temporals.format(articleComment.createdAt, 'yyyy-MM-dd HH:mm:ss')}" />
+            <attr sel="div/p" th:text="${articleComment.content}" />
+        </attr>
+    </attr>
+
 </thlogic>
+
