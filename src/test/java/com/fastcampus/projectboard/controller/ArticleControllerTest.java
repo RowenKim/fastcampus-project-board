@@ -96,12 +96,14 @@ class ArticleControllerTest {
     }
 
 
-    @DisplayName("[view][GET] - 게시글 상세 페이지 - 정상호출")
+    @DisplayName("[view][GET] - 게시글 페이지 - 정상호출")
     @Test
     public void givenNothing_whenRequestArticleView_thenReturnArticleView() throws Exception {
         // Given
         Long articleId = 1L;
+        Long totalCoubnt = 1L;
         given(articleService.getArticle(articleId)).willReturn(createArticleWithCommentsDto());
+        given(articleService.getArticleCount()).willReturn(totalCoubnt);
 
         // When & Then
         mvc.perform(get("/articles/" + articleId))
@@ -109,8 +111,10 @@ class ArticleControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("articles/detail")) // 뷰에 이름에 대한 테스트 -> 여기에 뷰가 있어야한다 테스트
                 .andExpect(model().attributeExists("article"))
-                .andExpect(model().attributeExists("articleComments"));
+                .andExpect(model().attributeExists("articleComments"))
+                .andExpect(model().attribute("totalCount", totalCoubnt));
         then(articleService).should().getArticle(articleId);
+        then(articleService).should().getArticleCount();
 
     }
 

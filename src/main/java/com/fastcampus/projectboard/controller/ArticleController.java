@@ -48,6 +48,7 @@ public class ArticleController {
         ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticle(articleId)); // 쿼리문 두번 실행 추후 리팩토리  queryDSL 사용
         map.addAttribute("article", article);
         map.addAttribute("articleComments", article.articleCommentsResponse());
+        map.addAttribute("totalCount", articleService.getArticleCount());
         return "articles/detail";
     }
 }
