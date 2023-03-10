@@ -32,10 +32,10 @@ public class ArticleController {
         map.addAttribute("articles", articleService.searchArticles(searchType, searchValue, pageable).map(ArticleResponse::from));
         return "articles/index";
     }
-
+    
     @GetMapping("/{articleId}")
     public String article(@PathVariable Long articleId, ModelMap map){
-        ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticle(articleId));
+        ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticle(articleId)); // 쿼리문 두번 실행 추후 리팩토리  queryDSL 사용
         map.addAttribute("article", article);
         map.addAttribute("articleComments", article.articleCommentsResponse());
         return "articles/detail";
