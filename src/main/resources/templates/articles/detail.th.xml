@@ -12,13 +12,25 @@
         <attr sel="#article-content/pre" th:text="*{content}" />
     </attr>
 
-    <attr sel="#article-comments" th:remove="all-but-first"><!-- 제일 상단 li 태그 빼고 아래에 있는 건 삭제. -->
-        <attr sel="li[0]" th:each="articleComment : ${articleComments}"><!-- 제일 상단 li 태그가 기준이 되어서 태그 안으로 치환 -->
+    <attr sel="#article-comments" th:remove="all-but-first">
+        <attr sel="li[0]" th:each="articleComment : ${articleComments}">
             <attr sel="div/strong" th:text="${articleComment.nickname}" />
             <attr sel="div/small/time" th:datetime="${articleComment.createdAt}" th:text="${#temporals.format(articleComment.createdAt, 'yyyy-MM-dd HH:mm:ss')}" />
             <attr sel="div/p" th:text="${articleComment.content}" />
         </attr>
     </attr>
 
+    <attr sel="#pagination">
+        <attr sel="ul">
+            <attr sel="li[0]/a"
+                  th:href="*{id} - 1 <= 0 ? '#' : |/articles/*{id - 1}|"
+                  th:class="'page-link' + (*{id} - 1 <= 0 ? ' disabled' : '')"
+            />
+            <attr sel="li[1]/a"
+                  th:href="*{id} + 1 > ${totalCount} ? '#' : |/articles/*{id + 1}|"
+                  th:class="'page-link' + (*{id} + 1 > ${totalCount} ? ' disabled' : '')"
+            />
+        </attr>
+    </attr>
 </thlogic>
 
