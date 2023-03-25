@@ -5,3 +5,5 @@
 - Tymeleaf
 - hal-explorer
 - data-rest
+- Junit
+- AssertJ
